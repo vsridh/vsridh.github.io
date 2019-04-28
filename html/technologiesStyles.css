@@ -1,0 +1,28 @@
+.header {
+  padding: 10px;
+  text-align: center;
+  background: #00a8e1;
+  color: white;
+  font-family: sans-serif;
+  font-size: 30px;
+}
+
+.container{
+  background: white;
+}
+
+.firstRow{
+  padding-bottom: 10px;
+}
+
+.temp{
+  float: left;
+}
+
+#header{
+  margin-top: 5px;
+}
+
+.container1{
+  padding-top: 10px;
+}

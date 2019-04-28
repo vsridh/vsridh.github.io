@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+       <link rel="stylesheet" href="technologiesStyles.css">
+       <link rel="stylesheet" href="../css/style.css">
+   </head>
+   <body style="height: 100%; margin: 0" class="container">
+
+     <div class="header">
+       <header id="header" class="alt" style="float:left">
+         <a href="../index.html">
+          <img src="../images/home.svg" class="homeIcon">
+        </a>
+        </header>
+       <select id="sel" onchange = "func(this.value)">
+           <option value="webTechnologies.html">Web Technology Trends</option>
+           <option value="databases.html">Databases</option>
+           <option value="programmingTechnologies.html">Programming Trends</option>
+       </select>
+     </div>
+<div id="container2" style= "width: 100%; height: 85%; float: left;padding-top:10px;"></div>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+  function func(src){
+    window.location = src;
+  }
+  var dom = document.getElementById("container2");
+  var myChart = echarts.init(dom);
+  var app = {};
+  option = null;
+  var dataMap = {};
+  function dataFormatter(obj) {
+      var pList = ['Django', 'HTML', 'Ruby-on-rails', 'Zend'];
+      var temp;
+      for (var year = 2008; year <= 2019; year++) {
+          var max = 0;
+          var sum = 0;
+          temp = obj[year];
+          for (var i = 0, l = temp.length; i < l; i++) {
+              max = Math.max(max, temp[i]);
+              sum += temp[i];
+              obj[year][i] = {
+                  name : pList[i],
+                  value : temp[i]
+              }
+          }
+          obj[year + 'max'] = Math.floor(max / 100) * 100;
+          obj[year + 'sum'] = sum;
+      }
+      return obj;
+  }
+
+  dataMap.dataPercentage = dataFormatter({
+      //max : 60000,
+      2019:[11.897832817337461,31.595975232198143,6.357585139318886,0.14860681114551083],
+      2018:[10.813810110974106,32.37071153985639,6.68201929353739,0.1334590556321172],
+      2017:[8.109421431997857,34.15494932000972,7.563684843349925,0.17194440464249894],
+      2016:[6.581270340852045,33.22221658177798,9.973151485410991,0.2233615919589827],
+      2015:[6.197201403630378,32.519603171164924,10.956927175843694,0.3262682493610016],
+      2014:[5.6973458580934615,32.190502895721664,11.637619576588333,0.47453166959654025],
+      2013:[6.203869938160782,29.538654044937708,13.450483288903397,0.806992727998114],
+      2012:[6.7413848052234595,26.043752196190272,15.43993266378472,1.7749303348015462],
+      2011:[7.150862786439549,23.25972368640071,17.181379348610108,2.408034178549631],
+      2010:[8.422151301659943,21.002187832440136,17.609040364504928,2.9666205013949942],
+      2009:[9.08054534456284,21.81378251361035,16.143967242101343,2.9617048997254667],
+      2008:[5.730164814105021,26.84936757378306,16.002299731697967,1.4181678804139517]
+  });
+
+
+  option = {
+      baseOption: {
+          timeline: {
+              // y: 0,
+              axisType: 'category',
+              // realtime: false,
+              // loop: false,
+              autoPlay: true,
+              // currentIndex: 2,
+              playInterval: 1000,
+              // controlStyle: {
+              //     position: 'left'
+              // },
+              data: [
+                  '2008-01-01','2009-01-01','2010-01-01','2011-01-01','2012-01-01',
+                  {
+                      value: '2013-01-01',
+                      tooltip: {
+                          formatter: '{b} Percentage'
+                      },
+                      symbol: 'diamond',
+                      symbolSize: 16
+                  },
+                  '2014-01-01', '2015-01-01','2016-01-01','2017-01-01','2018-01-01',
+                  {
+                      value: '2019-01-01',
+                      tooltip: {
+                          formatter: function (params) {
+                              return params.name + 'Percentage';
+                          }
+                      },
+                      symbol: 'diamond',
+                      symbolSize: 18
+                  },
+              ],
+              label: {
+                  formatter : function(s) {
+                      return (new Date(s)).getFullYear()+1;
+                  }
+              }
+          },
+          tooltip: {
+          },
+          legend: {
+              x: 'right',
+              data: ['Percentage'],
+              selected: {
+                  'Percentage': true
+              }
+          },
+          calculable : true,
+          grid: {
+              top: 80,
+              bottom: 100,
+              tooltip: {
+                  trigger: 'axis',
+                  axisPointer: {
+                      type: 'shadow',
+                      label: {
+                          show: true,
+                          formatter: function (params) {
+                              return params.value.replace('\n', '');
+                          }
+                      }
+                  }
+              }
+          },
+          xAxis: [
+              {
+                  'type':'category',
+                  'axisLabel':{'interval':0},
+                  'data':[
+                      'Django','HTML','Ruby-on-rails','Zend'
+                  ],
+                  splitLine: {show: false}
+              }
+          ],
+          yAxis: [
+              {
+                  type: 'value',
+                  name: 'Percentage'
+              }
+          ],
+          series: [
+              {name: 'Percentage', type: 'bar'},
+          ]
+      },
+      options: [
+          {
+              title: {text: '2008 WebTechnology Trends'},
+              series: [
+                  {data: dataMap.dataPercentage['2008']},
+              ]
+          },
+          {
+              title : {text: '2009 WebTechnology Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2009']},
+              ]
+          },
+          {
+              title : {text: '2010 WebTechnology Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2010']},
+              ]
+          },
+          {
+              title : {text: '2011 WebTechnology Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2011']},
+              ]
+          },
+          {
+              title : {text: '2012 WebTechnology Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2012']},
+              ]
+          },
+          {
+              title : {text: '2013 WebTechnology Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2013']},
+              ]
+          },
+          {
+              title : {text: '2014 WebTechnology Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2014']},
+              ]
+          },
+          {
+              title : {text: '2015 WebTechnology Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2015']},
+              ]
+          },
+          {
+              title : {text: '2016 WebTechnology Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2016']},
+              ]
+          },
+          {
+              title : {text: '2017 WebTechnology Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2017']},
+              ]
+          },
+          {
+              title : {text: '2018 WebTechnology Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2018']},
+              ]
+          },
+          {
+              title : {text: '2019 WebTechnology Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2019']},
+              ]
+          }
+      ]
+  };;
+  if (option && typeof option === "object") {
+  myChart.setOption(option, true);
+  }
+</script>
+
+</body>
+</html>

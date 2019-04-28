@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+       <link rel="stylesheet" href="technologiesStyles.css">
+       <link rel="stylesheet" href="../css/style.css">
+   </head>
+   <body style="height: 100%; margin: 0" class="container">
+
+     <div class="header">
+       <header id="header" class="alt" style="float:left">
+         <a href="../index.html">
+          <img src="../images/home.svg" class="homeIcon">
+        </a>
+        </header>
+       <select id="sel" onchange = "func(this.value)">
+           <option value="databases.html">Databases</option>
+           <option value="programmingTechnologies.html">Programming Trends</option>
+           <option value="webTechnologies.html">Web Technology Trends</option>
+       </select>
+     </div>
+<div id="container3" style= "width: 100%; height: 85%; float: left;padding-top:10px;"></div>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+  function func(src){
+    window.location = src;
+  }
+  var dom = document.getElementById("container3");
+  var myChart = echarts.init(dom);
+  var app = {};
+  option = null;
+  var dataMap = {};
+  function dataFormatter(obj) {
+      var pList = ['Postgre SQL', 'MySQL', 'Mongo DB', 'Oracle Database'];
+      var temp;
+      for (var year = 2008; year <= 2019; year++) {
+          var max = 0;
+          var sum = 0;
+          temp = obj[year];
+          for (var i = 0, l = temp.length; i < l; i++) {
+              max = Math.max(max, temp[i]);
+              sum += temp[i];
+              obj[year][i] = {
+                  name : pList[i],
+                  value : temp[i]
+              }
+          }
+          obj[year + 'max'] = Math.floor(max / 100) * 100;
+          obj[year + 'sum'] = sum;
+      }
+      return obj;
+  }
+
+    dataMap.dataPercentage = dataFormatter({
+        //max : 60000,
+        2008:[8.980298766,18.63606841,11.8294003,9.738038536],
+        2009:[8.923059888,16.58662164,12.9506858,14.13890465],
+        2010:[9.039580111,18.1907476,14.49600257,17.27132104],
+        2011:[8.248380298,19.38334244,17.61259855,18.84884084],
+        2012:[9.034888011,20.39821513,19.19226351,18.60997838],
+        2013:[10.25273383,20.32033369,20.86015762,17.90214711],
+        2014:[11.21659584,20.97625393,22.76539653,17.30980336],
+        2015:[12.99704935,20.42195121,24.23607884,16.29859041],
+        2016:[15.27452444,18.99596346,25.46749683,15.65983537],
+        2017:[19.51334497,17.75161817,25.40967685,14.50020335],
+        2018:[24.18068501,17.39175731,24.64526827,12.19994986],
+        2019:[26.48005309,17.06967329,23.54612483,11.21482237]
+    });
+
+
+  option = {
+      baseOption: {
+          timeline: {
+              // y: 0,
+              axisType: 'category',
+              // realtime: false,
+              // loop: false,
+              autoPlay: true,
+              // currentIndex: 2,
+              playInterval: 1000,
+              // controlStyle: {
+              //     position: 'left'
+              // },
+              data: [
+                  '2008-01-01','2009-01-01','2010-01-01','2011-01-01','2012-01-01',
+                  {
+                      value: '2013-01-01',
+                      tooltip: {
+                          formatter: '{b} Percentage'
+                      },
+                      symbol: 'diamond',
+                      symbolSize: 16
+                  },
+                  '2014-01-01', '2015-01-01','2016-01-01','2017-01-01','2018-01-01',
+                  {
+                      value: '2019-01-01',
+                      tooltip: {
+                          formatter: function (params) {
+                              return params.name + 'Percentage';
+                          }
+                      },
+                      symbol: 'diamond',
+                      symbolSize: 18
+                  },
+              ],
+              label: {
+                  formatter : function(s) {
+                      return (new Date(s)).getFullYear()+1;
+                  }
+              }
+          },
+          tooltip: {
+          },
+          legend: {
+              x: 'right',
+              data: ['Percentage'],
+              selected: {
+                  'Percentage': true
+              }
+          },
+          calculable : true,
+          grid: {
+              top: 80,
+              bottom: 100,
+              tooltip: {
+                  trigger: 'axis',
+                  axisPointer: {
+                      type: 'shadow',
+                      label: {
+                          show: true,
+                          formatter: function (params) {
+                              return params.value.replace('\n', '');
+                          }
+                      }
+                  }
+              }
+          },
+          xAxis: [
+              {
+                  'type':'category',
+                  'axisLabel':{'interval':0},
+                  'data':[
+                      'Postgre SQL','MySQL','Mongo DB','Oracle Database'
+                  ],
+                  splitLine: {show: false}
+              }
+          ],
+          yAxis: [
+              {
+                  type: 'value',
+                  name: 'Percentage'
+              }
+          ],
+          series: [
+              {name: 'Percentage', type: 'bar'},
+          ]
+      },
+      options: [
+          {
+              title: {text: '2008 Database Trends'},
+              series: [
+                  {data: dataMap.dataPercentage['2008']},
+              ]
+          },
+          {
+              title : {text: '2009 Database Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2009']},
+              ]
+          },
+          {
+              title : {text: '2010 Database Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2010']},
+              ]
+          },
+          {
+              title : {text: '2011 Database Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2011']},
+              ]
+          },
+          {
+              title : {text: '2012 Database Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2012']},
+              ]
+          },
+          {
+              title : {text: '2013 Database Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2013']},
+              ]
+          },
+          {
+              title : {text: '2014 Database Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2014']},
+              ]
+          },
+          {
+              title : {text: '2015 Database Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2015']},
+              ]
+          },
+          {
+              title : {text: '2016 Database Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2016']},
+              ]
+          },
+          {
+              title : {text: '2017 Database Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2017']},
+              ]
+          },
+          {
+              title : {text: '2018 Database Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2018']},
+              ]
+          },
+          {
+              title : {text: '2019 Database Trends'},
+              series : [
+                  {data: dataMap.dataPercentage['2019']},
+              ]
+          }
+      ]
+  };;
+  if (option && typeof option === "object") {
+  myChart.setOption(option, true);
+  }
+</script>
+
+</body>
+</html>
